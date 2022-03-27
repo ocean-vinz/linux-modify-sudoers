@@ -1,0 +1,19 @@
+---
+- name: Updating the sudoers files
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Transfer executable script script
+    copy: src=/somepath/modify_sudoers_file.sh/ dest=/tmp/modify_sudoers_file.sh mode=0777
+ 
+  - name: Execute the script
+    command: bash /tmp/modify_sudoers_file.sh
+    register: echo_output
+  
+  - debug: msg="{{echo_output.stdout}}"
+
+  - name: delete the script once done
+    file:
+     state: absent
+     path: /tmp/modify_sudoers_file.sh
